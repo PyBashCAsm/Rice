@@ -15,7 +15,7 @@ char *getcode(FILE *tgt_file){
 	while (1){
 		token=getc(tgt_file);
 		if (token=='\n'){ 
-			buff[counter]='$';
+			buff[counter]=';';
 			break;
 		}
 		else if(token==EOF){
