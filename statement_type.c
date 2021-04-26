@@ -2,10 +2,8 @@
 
 int keyword_type(const char *line){
 	char start='<',end='>';
-	char *keywords[]={"start","end","DEF_FUNC","END_FUNC_DEF"};
-	if (line[0]!=start) return NOT_KEYWORD;
-	else 
-		if(getindex(line,end)==-1) return ILLEGAL_KEYWORD;
+	char *keywords[]={"start","end","START_FUNC_DEF","END_FUNC_DEF"};
+	if (line[0]==start && getindex(line,end)!=-1){
 	char *keyword;
 	keyword=getsubstring(line,start,end);
 	int counter=0;
@@ -20,4 +18,5 @@ int keyword_type(const char *line){
 		case 3:return END_FUNC_DEF;
 	}
 	return UNKNOWN_KEYWORD;
+	}else return ILLEGAL_KEYWORD;
 }

@@ -14,7 +14,10 @@ char *getcode(FILE *tgt_file){
 	int buffersize=BUFFERSIZE;
 	while (1){
 		token=getc(tgt_file);
-		if (token=='\n') break;
+		if (token=='\n'){ 
+			buff[counter]='$';
+			break;
+		}
 		else if(token==EOF){
 			*buff='#';
 			return buff;
