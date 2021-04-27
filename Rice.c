@@ -7,10 +7,11 @@ int main(){
 	do {
 		buff=getcode(input);
 		if (buff[0]=='#') break;
-		parse("dev.ri",buff,line);
+		error_reporter("dev.ri",buff,line);
 		line++;
 		
 	} while(1);
+	fclose(input);
 
 	return 0;
 }

@@ -9,4 +9,6 @@
 #define DEFINE_FUNC 0x3
 #define END_FUNC_DEF 0x4
 
+#define PRINT_FUNC 0x100
+
 #endif
