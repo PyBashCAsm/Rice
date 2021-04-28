@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <str.h>
-#include <types.h>
+#include "str.h"
+#include "types.h"
 
 #define BUFFERSIZE 100
 

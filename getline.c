@@ -1,4 +1,4 @@
-#include <common.h>
+#include "common.h"
 
 char *getcode(FILE *tgt_file){
 	if (tgt_file==NULL){

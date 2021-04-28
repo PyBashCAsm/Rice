@@ -1,4 +1,4 @@
-#include <common.h>
+#include "common.h"
 
 int main(){
 	FILE *input=fopen("dev.ri","r");
