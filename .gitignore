@@ -1,3 +1,8 @@
 dev.ri
 a.out
 libstr.so
+
+
+# Added by cargo
+
+/target
