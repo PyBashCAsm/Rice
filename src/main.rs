@@ -4,6 +4,7 @@ mod insn;
 
 use rustop::opts;
 use stdin::StdinReader;
+use insn::Insn;
 
 fn main() {
     let (args, _) = opts!{
@@ -19,7 +20,7 @@ fn main() {
            let mut s = String::new();
            loop {
                reader.read_line(&mut s);
-               println!("{}", s);
+               let s = Insn::new(&s);
            }
        }
    }

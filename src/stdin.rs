@@ -21,6 +21,7 @@ impl StdinReader {
 
                 let trim = dest.trim_end_matches("\n").len();
                 dest.truncate(trim);
+                dest.push(' ');
                 self.line += 1;
             }
 
