@@ -1,4 +1,4 @@
-use crate::args::Regs;
+use crate::args::Args;
 
 pub struct Insn {
     ins: Ins,
@@ -67,11 +67,16 @@ impl Insn {
         }
     }
 
-    fn verify(&self) -> bool {
+    fn exec(&self) -> bool {
         match self.ins {
             Ins::MOV => {
               arg_check(self.args.len(), 3);
+              let arg1 = match Args::new(&self.args[1]) {
+                Args::REGS(s) => s,
+                Args::VALUE(_) => panic!("First argument must be a register"),
+              };
               
+              let arg2 = Args::new(&self.args[2]);
               true
             }
             

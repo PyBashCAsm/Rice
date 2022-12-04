@@ -47,7 +47,13 @@ pub enum Constant {
 
 impl Constant {
   fn new (src: &str) -> Self {
-    
+     match src.parse::<i32>() {
+       Ok(s) => Constant::INT(s),
+       Err(_) => match src.parse::<f32>() {
+         Ok(f) => Constant::FLOAT(f),
+         Err(_) => Constant::STRING(String::from(src))
+       }
+     }
   }
 }
 
@@ -57,11 +63,11 @@ pub enum Args {
 }
 
 impl Args {
-  fn new(arg: &str) -> Self {
+  pub fn new(arg: &str) -> Self {
     if let Some(s) = Regs::new(arg) {
       return Args::REGS(s);
     }
     
-    Args::VALUE(Constant::INT(78))
+    Args::VALUE(Constant::new(arg))
   }
 }
