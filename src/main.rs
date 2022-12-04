@@ -1,6 +1,7 @@
 extern crate rustop;
 mod stdin;
 mod insn;
+mod args;
 
 use rustop::opts;
 use stdin::StdinReader;
