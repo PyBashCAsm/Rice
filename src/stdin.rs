@@ -1,14 +1,12 @@
 use std::io;
 
 pub struct StdinReader {
-    line: u32
+    line: u32,
 }
 
 impl StdinReader {
     pub fn new() -> Self {
-        StdinReader {
-            line: 0u32
-        }
+        StdinReader { line: 0u32 }
     }
 
     pub fn read_line(&mut self, dest: &mut String) {
@@ -19,7 +17,7 @@ impl StdinReader {
                     std::process::exit(0);
                 }
 
-                let trim = dest.trim_end_matches("\n").len();
+                let trim = dest.trim_end_matches('\n').len();
                 dest.truncate(trim);
                 dest.push(' ');
                 self.line += 1;
