@@ -1,0 +1,2 @@
+mov r1, "Hello World"
+write r1
