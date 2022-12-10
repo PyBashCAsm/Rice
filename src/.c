@@ -27,9 +27,8 @@ fn main() {
             match File::open(&s) {
                 Ok(handle) => {
                     let lines = BufReader::new(handle).lines();
-                    for mut line in lines {
-                        line.as_mut().unwrap().push(' ');
-                        Insn::new(&line.unwrap()).exec(&mut engine);
+                    for line in lines {
+                        Insn::new(&line).exec(&mut engine);
                     }
                 }
                 Err(e) => panic!("Error opening file {s}: {e}"),

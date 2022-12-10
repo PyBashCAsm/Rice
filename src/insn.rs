@@ -1,11 +1,12 @@
-use crate::args::Args;
+use crate::args::{Args, Regs};
+use crate::engine::Engine;
 
 pub struct Insn {
     ins: Ins,
     args: Vec<String>,
 }
 
-#[inline]
+#[inline(always)]
 fn arg_check(arg: usize, lim: usize) {
     if arg < lim {
         panic!("Too few arguments for instruction");
@@ -21,6 +22,7 @@ impl Insn {
         let mut acc = String::new();
         let mut args: Vec<String> = Vec::new();
         let mut string = false;
+        let mut exp = -2;
 
         for i in line.chars() {
             if i == '"' {
@@ -37,8 +39,21 @@ impl Insn {
 
             if (i == ' ' || i == ',') && !string {
                 if !acc.is_empty() {
-                    args.push(acc.clone());
-                    acc.clear();
+                    if exp == -2 || exp == -1 || exp == 1 {
+                        args.push(acc.clone());
+                        acc.clear();
+                        if exp == -2 {
+                            exp = -1;
+                        }
+
+                        else {
+                            exp = 0;
+                        }
+                    }
+
+                    else {
+                        panic!("',' expected here");
+                    }
                 }
 
                 if i == ' ' {
@@ -46,7 +61,7 @@ impl Insn {
                 }
 
                 if i == ',' {
-                    args.push(String::from(","));
+                    exp = 1;
                     continue;
                 }
             }
@@ -58,39 +73,52 @@ impl Insn {
             panic!("Unclosed string literal");
         }
 
-        for i in args.iter() {
-            println!("{i}");
-        }
+        
         Insn {
             ins: Ins::new(&args[0]),
             args,
         }
     }
 
-    fn exec(&self) -> bool {
+    pub fn exec(&self, engine: &mut Engine) -> bool {
         match self.ins {
             Ins::Mov => {
                 arg_check(self.args.len(), 3);
-                let arg1 = match Args::new(&self.args[1]) {
-                    Args::Regs(s) => s,
-                    Args::Value(_) => panic!("First argument must be a register"),
+                let arg1 = match Regs::new(&self.args[1]) {
+                    Some(s) => s,
+                    None => panic!("First argument must be a register"),
                 };
 
                 let arg2 = Args::new(&self.args[2]);
+                engine.mov(arg1, arg2);
                 true
             }
+
+            Ins::Write => {
+                arg_check(self.args.len(), 2);
+                let arg1 = match Regs::new(&self.args[1]) {
+                    Some(s) => s,
+                    None => panic!("First argument must be a register"),
+                };
+
+                println!("{}", engine.get(arg1));
+                true
+            }
+
         }
     }
 }
 
 enum Ins {
     Mov,
+    Write,
 }
 
 impl Ins {
     pub fn new(ins: &str) -> Self {
         match ins {
             "mov" | "MOV" => Ins::Mov,
+            "write" | "WRITE" => Ins::Write,
             _ => panic!("{} is not a valid instruction", ins),
         }
     }
