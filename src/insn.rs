@@ -144,7 +144,7 @@ impl Insn {
 
 enum Ins {
     Mov,
-    Write,
+    Write
 }
 
 impl Ins {
