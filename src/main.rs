@@ -7,11 +7,14 @@ mod args;
 mod insn;
 mod stdin;
 mod engine;
+mod parser;
+mod reader;
 
 use insn::Insn;
 use rustop::opts;
 use stdin::StdinReader;
 use engine::Engine;
+use reader::Reader;
 
 fn main() {
     let (args, _) = opts! {
@@ -24,24 +27,15 @@ fn main() {
     let mut engine = Engine::new();
     match args.file {
         Some(s) => {
-            match File::open(&s) {
-                Ok(handle) => {
-                    let lines = BufReader::new(handle).lines();
-                    for mut line in lines {
-                        line.as_mut().unwrap().push(' ');
-                        Insn::new(&line.unwrap()).exec(&mut engine);
-                    }
-                }
-                Err(e) => panic!("Error opening file {s}: {e}"),
+            let mut reader = Reader::new(Some(s));
+            loop {
+                Insn::new(&reader.read_line()).exec(&mut engine);
             }
         }
         None => {
-            let mut reader = StdinReader::new();
-            let mut s = String::new();
+            let mut reader = Reader::new(None);
             loop {
-                reader.read_line(&mut s);
-                Insn::new(&s).exec(&mut engine);
-                s.clear();
+                Insn::new(&reader.read_line()).exec(&mut engine);
             }
         }
     }

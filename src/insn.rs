@@ -19,6 +19,9 @@ fn arg_check(arg: usize, lim: usize) {
 
 impl Insn {
     pub fn new(line: &str) -> Self {
+        if line == "<EOF>" {
+            std::process::exit(0)
+        }
         let mut acc = String::new();
         let mut args: Vec<String> = Vec::new();
         let mut string = false;
@@ -106,7 +109,6 @@ impl Insn {
             panic!("Unclosed string literal");
         }
 
-        
         Insn {
             ins: Ins::new(&args[0]),
             args,
@@ -133,7 +135,6 @@ impl Insn {
                     Some(s) => s,
                     None => panic!("First argument must be a register"),
                 };
-
                 println!("{}", engine.get(arg1));
                 true
             }
