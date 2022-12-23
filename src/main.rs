@@ -9,12 +9,14 @@ mod stdin;
 mod engine;
 mod parser;
 mod reader;
+mod func;
+mod file;
 
 use insn::Insn;
 use rustop::opts;
-use stdin::StdinReader;
 use engine::Engine;
 use reader::Reader;
+use crate::parser::Parser;
 
 fn main() {
     let (args, _) = opts! {
@@ -25,18 +27,14 @@ fn main() {
     .parse_or_exit();
 
     let mut engine = Engine::new();
-    match args.file {
-        Some(s) => {
-            let mut reader = Reader::new(Some(s));
-            loop {
-                Insn::new(&reader.read_line()).exec(&mut engine);
-            }
-        }
+    let file = Parser::new(Reader::new(args.file)).parse();
+    match file.get_func("__main__") {
+        Some(s) => s.exec(&mut engine),
         None => {
-            let mut reader = Reader::new(None);
-            loop {
-                Insn::new(&reader.read_line()).exec(&mut engine);
+            match file.get_func("main") {
+                Some(u) => u.exec(&mut engine),
+                None => panic!("No main method")
             }
         }
-    }
+    };
 }

@@ -1,2 +1,4 @@
+function main
 mov r1, "Hello World"
 write r1
+end

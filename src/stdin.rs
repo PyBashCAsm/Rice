@@ -1,3 +1,4 @@
+// This file is no longer in use and will be removed in the future
 use std::io;
 
 pub struct StdinReader {
