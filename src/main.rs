@@ -1,18 +1,18 @@
 extern crate rustop;
 
 mod args;
-mod insn;
 mod engine;
+mod file;
+mod func;
+mod insn;
 mod parser;
 mod reader;
-mod func;
-mod file;
 
-use insn::Insn;
-use rustop::opts;
-use engine::Engine;
-use reader::Reader;
 use crate::parser::Parser;
+use engine::Engine;
+use insn::Insn;
+use reader::Reader;
+use rustop::opts;
 
 fn main() {
     let (args, _) = opts! {
@@ -26,11 +26,9 @@ fn main() {
     let file = Parser::new(Reader::new(args.file)).parse();
     match file.get_func("__main__") {
         Some(s) => s.exec(&mut engine),
-        None => {
-            match file.get_func("main") {
-                Some(u) => u.exec(&mut engine),
-                None => panic!("No main method")
-            }
-        }
+        None => match file.get_func("main") {
+            Some(u) => u.exec(&mut engine),
+            None => panic!("No main method"),
+        },
     };
 }

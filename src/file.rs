@@ -2,14 +2,14 @@ use crate::func::Func;
 
 pub struct File {
     name: String,
-    funcs: Vec<Func>
+    funcs: Vec<Func>,
 }
 
 impl File {
     pub fn new(name: &str) -> Self {
         File {
             name: String::new(),
-            funcs: Vec::new()
+            funcs: Vec::new(),
         }
     }
 

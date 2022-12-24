@@ -1,5 +1,6 @@
 use std::fmt;
 
+#[derive(Copy, Clone)]
 pub enum Regs {
     R0 = 0,
     R1 = 1,
@@ -35,6 +36,12 @@ impl Regs {
     }
 }
 
+impl fmt::Display for Regs {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "r{}", *self as usize)
+    }
+}
+
 impl Into<usize> for Regs {
     fn into(self) -> usize {
         self as usize
@@ -64,7 +71,7 @@ impl fmt::Display for Constant {
         match self {
             Constant::Int(i) => write!(f, "{}", i),
             Constant::Float(fl) => write!(f, "{}", fl),
-            Constant::Str(s) => write!(f, "{}", s)
+            Constant::Str(s) => write!(f, "{}", s),
         }
     }
 }
@@ -85,13 +92,15 @@ impl Args {
 }
 
 impl fmt::Display for Args {
-    fn fmt (&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Args::Value(s) => {
                 write!(f, "{}", s)
             }
-            
-            _ => panic!("Internal error: Trying to Display Regs")
+
+            Args::Regs(r) => {
+                write!(f, "{}", r)
+            }
         }
     }
 }

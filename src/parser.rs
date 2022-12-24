@@ -48,9 +48,7 @@ pub fn split(line: &str) -> Vec<String> {
             }
 
             comm = true;
-        }
-
-        else if comm {
+        } else if comm {
             panic!("Expected '/' here");
         }
 

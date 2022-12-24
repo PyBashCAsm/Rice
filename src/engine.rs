@@ -1,7 +1,7 @@
 use crate::args::{Args, Regs};
 
 pub struct Engine {
-    regs: Vec<Args>
+    regs: Vec<Args>,
 }
 
 impl Engine {
@@ -13,9 +13,7 @@ impl Engine {
             iter += 1;
         }
 
-        Engine {
-            regs
-        }
+        Engine { regs }
     }
 
     pub fn mov(&mut self, dest: Regs, args: Args) {
