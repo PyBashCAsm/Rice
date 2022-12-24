@@ -7,6 +7,7 @@ mod func;
 mod insn;
 mod parser;
 mod reader;
+mod defs;
 
 use crate::parser::Parser;
 use engine::Engine;

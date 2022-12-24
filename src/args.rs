@@ -47,15 +47,16 @@ impl Into<usize> for Regs {
         self as usize
     }
 }
-
+#[derive(Clone)]
 pub enum Constant {
     Int(i32),
     Float(f32),
+    Result(f64),
     Str(String),
 }
 
 impl Constant {
-    fn new(src: &str) -> Self {
+    pub fn new(src: &str) -> Self {
         match src.parse::<i32>() {
             Ok(s) => Constant::Int(s),
             Err(_) => match src.parse::<f32>() {
@@ -72,6 +73,7 @@ impl fmt::Display for Constant {
             Constant::Int(i) => write!(f, "{}", i),
             Constant::Float(fl) => write!(f, "{}", fl),
             Constant::Str(s) => write!(f, "{}", s),
+            Constant::Result(r) => write!(f, "{}", r)
         }
     }
 }

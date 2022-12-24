@@ -10,7 +10,7 @@ pub struct Func {
 impl Func {
     pub fn new(name: &str, parser: &mut Parser) -> Self {
         let mut insn: Vec<Insn> = Vec::new();
-        let mut src = parser.inner_reader();
+        let src = parser.inner_reader();
         loop {
             let line = src.read_line();
             if src.is_eof() {
@@ -25,9 +25,11 @@ impl Func {
 
             if line.contains("end") {
                 break;
-            } else if line.len() == 1 {
+            }
+            else if line.len() == 1 {
                 continue;
             }
+            
             insn.push(Insn::new(&line));
         }
 

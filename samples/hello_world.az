@@ -1,7 +1,17 @@
-// A very simple function to demonstrate the famous "Hello World" example 
+// A very simple program to demonstrate (mostly) all available features of this language
+define VERSION, "0.1.0"
 function main
 
-mov r1, "Hello World"
+mov r1, 70
+add r2, r1, 90
+sub r3, r1, r2
+mul r4, r2, r3
+div r5, r4, 100
 write r1
+write r2
+write r3
+write r4
+write r5
+write r6
 
 end

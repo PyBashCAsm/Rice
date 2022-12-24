@@ -1,3 +1,5 @@
+use crate::args::Constant;
+use crate::defs::Defs;
 use crate::file::File;
 use crate::func::Func;
 use crate::Reader;
@@ -115,26 +117,36 @@ impl Parser {
     }
 
     pub fn parse(&mut self) -> File {
-        let mut file = File::new(&self.src.file());
+        let mut file = File::new(self.src.file());
         loop {
             self.line = self.src.read_line();
             if self.src.is_eof() {
                 break;
             }
-            let top = true;
-            let parts = split(&self.line);
-            if parts.len() == 0 {
+
+            let mut parts = split(&self.line);
+            if parts.is_empty() {
                 continue;
             }
 
-            if parts[0] == "function" {
-                if parts.len() < 2 {
-                    self.error("Expected identifier (name of function) ");
+            let mut i = 0usize;
+            match parts[0].as_str().trim() {
+                "define" => {
+                    if parts.len() != 3 {
+                        self.error("Invalid number of arguments to define expression");
+                    }
+                    file.add_def(Defs::new(&parts[1],Constant::new(&parts[2])));
                 }
-                file.add_func(Func::new(&parts[1], self));
-            } else {
-                self.src.push_back(&self.line);
-                file.add_func(Func::new("__main__", self));
+                "function" => {
+                    if parts.len() < 2 {
+                        self.error("Expected identifier (name of function) ");
+                    }
+                    file.add_func(Func::new(&parts[1], self));
+                }
+                _ => {
+                    self.src.push_back(&self.line);
+                    file.add_func(Func::new("__main__", self));
+                }
             }
         }
 
