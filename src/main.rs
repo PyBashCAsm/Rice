@@ -1,11 +1,7 @@
 extern crate rustop;
 
-use std::fs::File;
-use std::io::{self, BufRead, BufReader, Lines};
-
 mod args;
 mod insn;
-mod stdin;
 mod engine;
 mod parser;
 mod reader;

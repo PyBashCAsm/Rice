@@ -1,4 +1,7 @@
+// A very simple function to demonstrate the famous "Hello World" example 
 function main
+
 mov r1, "Hello World"
 write r1
+
 end

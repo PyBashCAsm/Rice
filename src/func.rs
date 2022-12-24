@@ -23,6 +23,9 @@ impl Func {
       if line.contains("end") {
         break;
       }
+      else if line.len() == 1 {
+          continue;
+      }
       insn.push(Insn::new(&line));
     }
 

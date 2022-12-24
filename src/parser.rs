@@ -11,6 +11,7 @@ pub fn split(line: &str) -> Vec<String> {
     let mut acc = String::new();
     let mut args: Vec<String> = Vec::new();
     let mut string = false;
+    let mut comm = false;
     let mut exp = -2;
 
     // Before you move through this code, make sure to read this
@@ -41,6 +42,18 @@ pub fn split(line: &str) -> Vec<String> {
     // 1 = Comma was expected and found. Push acc to args.
 
     for i in line.chars() {
+        if i == '/' {
+            if comm {
+                break;
+            }
+
+            comm = true;
+        }
+
+        else if comm {
+            panic!("Expected '/' here");
+        }
+
         if i == '"' {
             if !string {
                 string = true;
@@ -112,6 +125,9 @@ impl Parser {
             }
             let top = true;
             let parts = split(&self.line);
+            if parts.len() == 0 {
+                continue;
+            }
 
             if parts[0] == "function" {
                 if parts.len() < 2 {
